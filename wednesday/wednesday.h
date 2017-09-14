@@ -9,3 +9,7 @@ HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, in
 inline long TimeMillis();
 
 void AdvanceFrame(HWND hwnd);
+
+BOOL PlayResource(HINSTANCE hInst, LPTSTR lpName);
+
+HBITMAP LoadBitmapFromBytes(unsigned char bytes[]);

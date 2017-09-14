@@ -18,9 +18,6 @@
     <ClCompile Include="wednesday.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="wednesday.h">
@@ -29,8 +26,13 @@
     <ClInclude Include="resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bitmap.h">
+    <ClInclude Include="resource1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="wednesday.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

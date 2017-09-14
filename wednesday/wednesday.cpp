@@ -1,20 +1,20 @@
 #define _SCL_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
 
+#pragma comment(lib, "Winmm.lib")
 
 #include "wednesday.h"
-#include "bitmap.h"
 #include "resources.h"
 
+#include <algorithm>
 #include <map>
 #include <string>
+
 #include <time.h>
-#include <algorithm>
 #include <windows.h>
 
 const wchar_t kClassName[] = L"Wednesday";
 
-const double kUnitTime = 60000 / 145.0;
+const double kUnitTime = 60000 / 146.0;
 
 const double kStep = 5.5 / 72.0;
 
@@ -42,12 +42,12 @@ const double timings[] = { 2.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5
 const double kSizeX[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1,
-                          1, 1.3, 1.3, 1.7, 1.7, 2.2, 2.2, 2.8, 2.8 };
+                          1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 3.9, 3.9 };
 
 const double kSizeY[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1,
-                          1, 1, 1.3, 1.3, 1.7, 1.7, 2.2, 2.2, 2.8 };
+                          1, 1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 3.9 };
 
 const int kBaseSizeX = (int) (GetSystemMetrics(SM_CXSCREEN) / 6.0);
 const int kBaseSizeY = (int) (GetSystemMetrics(SM_CXSCREEN) / 8.0);
@@ -60,7 +60,11 @@ static HBITMAP bitmaps[kFrameCount];
 std::map<HWND, int> lastFrameIndex;
 std::map<HWND, long> lastSwitch;
 
+static HINSTANCE globalHInst;
+
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
+    globalHInst = hInst;
+
     unsigned char* bitmapBytes[] = { __0_bmp, __1_bmp, __2_bmp, __3_bmp, __4_bmp, __5_bmp, __6_bmp, __7_bmp, __8_bmp, __9_bmp, __10_bmp };
     std::transform(bitmapBytes, bitmapBytes + kFrameCount, bitmaps, LoadBitmapFromBytes);
 
@@ -73,6 +77,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     RegisterClass(&wc);
 
+    PlayResource(hInst, TEXT("music"));
+
     int resX = GetSystemMetrics(SM_CXSCREEN);
     int resY = GetSystemMetrics(SM_CYSCREEN);
 
@@ -80,6 +86,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     HWND windows[totalWindows] = {};
 
     long lastWindow = 0;
+
+    Sleep((DWORD) (3.25 * kUnitTime));
 
     int i = 0;
     while (true) {
@@ -148,6 +156,56 @@ void AdvanceFrame(HWND hwnd) {
     lastSwitch[hwnd] = TimeMillis();
     InvalidateRect(hwnd, NULL, true);
     UpdateWindow(hwnd);
+}
+
+BOOL PlayResource(HINSTANCE hInst, LPTSTR lpName) {
+    BOOL bRtn;
+    LPVOID lpRes;
+    HANDLE hRes;
+    HRSRC hResInfo;
+
+    // Find the wave resource.
+    hResInfo = FindResource(hInst, lpName, L"WAVE");
+
+    if (hResInfo == NULL)
+        return FALSE;
+
+    // Load the wave resource. 
+    hRes = LoadResource(hInst, hResInfo);
+
+    if (hRes == NULL)
+        return FALSE;
+
+    // Lock the wave resource and play it. 
+    lpRes = LockResource(hRes);
+
+    if (lpRes != NULL) {
+        bRtn = sndPlaySound((LPTSTR) lpRes, SND_MEMORY | SND_ASYNC | SND_NODEFAULT);
+    } else
+        bRtn = 0;
+
+    return bRtn;
+}
+
+HBITMAP LoadBitmapFromBytes(unsigned char bytes[]) {
+    BITMAPFILEHEADER* bmfh;
+    bmfh = (BITMAPFILEHEADER*) bytes;
+
+    BITMAPINFOHEADER* bmih;
+    bmih = (BITMAPINFOHEADER*) (bytes + sizeof(BITMAPFILEHEADER));
+    BITMAPINFO* bmi;
+    bmi = (BITMAPINFO*) bmih;
+
+    void* bits;
+    bits = (void*) (bytes + bmfh->bfOffBits);
+
+    HDC hdc = ::GetDC(NULL);
+
+    HBITMAP hbmp = CreateDIBitmap(hdc, bmih, CBM_INIT, bits, bmi, DIB_RGB_COLORS);
+
+    ::ReleaseDC(NULL, hdc);
+
+    return hbmp;
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {

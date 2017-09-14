@@ -150,12 +150,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="wednesday.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="wednesday.rc" />
+    <Media Include="D:\Libraries\Downloads\wednesday.wav" />
+    <Media Include="res\wednesday.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="music.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

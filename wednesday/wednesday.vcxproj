@@ -151,12 +151,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_snd.h" />
-    <ClInclude Include="resource_img.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="wednesday.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="images.rc" />
     <ResourceCompile Include="music.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

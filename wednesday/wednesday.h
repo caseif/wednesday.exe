@@ -10,7 +10,7 @@ inline long TimeMillis();
 
 void AdvanceFrame(HWND hwnd);
 
-BOOL PlayResource(HINSTANCE hInst, LPTSTR lpName);
+BOOL PlayResource(HINSTANCE hInst, INT res);
 
 HBITMAP LoadBitmapFromBytes(unsigned char bytes[]);
 

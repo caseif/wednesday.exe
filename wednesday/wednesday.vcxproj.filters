@@ -29,15 +29,9 @@
     <ClInclude Include="resource_snd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource_img.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="music.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="images.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

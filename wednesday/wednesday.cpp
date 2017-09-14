@@ -5,6 +5,7 @@
 
 #include "wednesday.h"
 #include "resources.h"
+#include "resource_snd.h"
 
 #include <algorithm>
 #include <map>
@@ -87,7 +88,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     RegisterClass(&wc);
 
-    PlayResource(hInst, TEXT("music"));
+    PlayResource(hInst, MUSIC);
 
     int resX = GetSystemMetrics(SM_CXSCREEN);
     int resY = GetSystemMetrics(SM_CYSCREEN);
@@ -97,7 +98,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     long lastWindow = 0;
 
-    Sleep((DWORD) (3.25 * kUnitTime));
+	long time = TimeMillis();
+	while (TimeMillis() - time < (3.25 * kUnitTime)) {
+		Sleep(50);
+	}
 
     int i = 0;
     while (true) {
@@ -170,14 +174,14 @@ void AdvanceFrame(HWND hwnd) {
     UpdateWindow(hwnd);
 }
 
-BOOL PlayResource(HINSTANCE hInst, LPTSTR lpName) {
+BOOL PlayResource(HINSTANCE hInst, INT res) {
     BOOL bRtn;
     LPVOID lpRes;
     HANDLE hRes;
     HRSRC hResInfo;
 
     // Find the wave resource.
-    hResInfo = FindResource(hInst, lpName, L"WAVE");
+    hResInfo = FindResource(hInst, MAKEINTRESOURCE(res), L"WAVE");
 
     if (hResInfo == NULL)
         return FALSE;

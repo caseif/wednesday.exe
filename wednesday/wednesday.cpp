@@ -1,5 +1,6 @@
 #define _SCL_SECURE_NO_WARNINGS
 
+#pragma comment(lib, "MSIMG32.lib")
 #pragma comment(lib, "Winmm.lib")
 
 #include "wednesday.h"
@@ -17,6 +18,9 @@ const wchar_t kClassName[] = L"Wednesday";
 const double kUnitTime = 60000 / 146.0;
 
 const double kStep = 5.5 / 72.0;
+
+const COLORREF kRed = RGB(255, 0, 0);
+const COLORREF kBlue = RGB(0, 0, 255);
 
 const double kXOff[] = { 0, 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
                          6 * kStep, 7 * kStep, 8 * kStep, 9 * kStep, 10 * kStep,
@@ -49,6 +53,11 @@ const double kSizeY[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 3.9 };
 
+const COLORREF colors[] = { kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue,
+							kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed,
+							kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue,
+							kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed };
+
 const int kBaseSizeX = (int) (GetSystemMetrics(SM_CXSCREEN) / 6.0);
 const int kBaseSizeY = (int) (GetSystemMetrics(SM_CXSCREEN) / 8.0);
 
@@ -59,6 +68,7 @@ static HBITMAP bitmaps[kFrameCount];
 
 std::map<HWND, int> lastFrameIndex;
 std::map<HWND, long> lastSwitch;
+std::map<HWND, COLORREF> hwndColors;
 
 static HINSTANCE globalHInst;
 
@@ -111,7 +121,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
             } else {
                 y = (int) (kYOff[i] * resY);
             }
-            windows[i] = MakeFrog(hInst, kClassName, x, y, width, height, nShowCmd);
+            windows[i] = MakeFrog(hInst, kClassName, x, y, width, height, colors[i], nShowCmd);
             lastWindow = TimeMillis();
             i++;
         }
@@ -135,7 +145,7 @@ inline long TimeMillis() {
     return (time.wSecond * 1000) + time.wMilliseconds;
 }
 
-HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, int nCmdShow) {
+HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, COLORREF color, int nCmdShow) {
     HWND hwnd = CreateWindowEx(NULL, kClassName, L"My Dudes", WS_OVERLAPPEDWINDOW,
         x, y, w, h,
         NULL, NULL, hInst, NULL);
@@ -144,6 +154,8 @@ HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, in
         MessageBox(NULL, std::to_wstring(GetLastError()).c_str(), L"Failed to Launch", MB_ICONERROR);
         return NULL;
     }
+
+	hwndColors[hwnd] = color;
 
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
@@ -208,6 +220,10 @@ HBITMAP LoadBitmapFromBytes(unsigned char bytes[]) {
     return hbmp;
 }
 
+HBITMAP LoadBitmapFromResource(LPTSTR resource) {
+
+}
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
     case WM_CREATE:
@@ -231,6 +247,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         HDC             hdcMem;
         HGDIOBJ         oldBitmap;
 
+		HBRUSH brush = CreateSolidBrush(hwndColors[hwnd]);
+		SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG) brush);
+
         hdc = BeginPaint(hwnd, &ps);
 
         HBITMAP hbmp = bitmaps[lastFrameIndex[hwnd]];
@@ -241,8 +260,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         GetObject(hbmp, sizeof(bitmap), &bitmap);
         RECT rect;
         GetWindowRect(hwnd, &rect);
-        StretchBlt(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top - 38, hdcMem, 0, 0,
-                bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+        AlphaBlend(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top - 38, hdcMem, 0, 0,
+			bitmap.bmWidth, bitmap.bmHeight, { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA });
 
         SelectObject(hdcMem, oldBitmap);
         DeleteDC(hdcMem);
@@ -251,6 +270,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         break;
     }
+	case WM_ERASEBKGND:
+	{
+	}
     default:
     {
         return DefWindowProc(hwnd, uMsg, wParam, lParam);

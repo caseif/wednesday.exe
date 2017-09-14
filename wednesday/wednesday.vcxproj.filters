@@ -26,26 +26,18 @@
     <ClInclude Include="resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="resource_snd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="resource_img.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="D:\Libraries\Downloads\wednesday.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="res\wednesday.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="music.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="images.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

@@ -136,6 +136,9 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
         for (int i = 0; i < totalWindows; i++) {
             HWND hwnd = windows[i];
+
+            PeekMessage(NULL, hwnd, 0, 0, PM_NOREMOVE);
+
             if (hwnd != NULL) {
                 if (lastFrameIndex[hwnd] < kFrameCount - 1 && GetTickCount() - lastSwitch[hwnd] >= kFrameInterval) {
                     AdvanceFrame(hwnd);

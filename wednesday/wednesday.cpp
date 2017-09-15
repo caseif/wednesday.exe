@@ -1,4 +1,5 @@
 #define _SCL_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 #pragma comment(lib, "MSIMG32.lib")
 #pragma comment(lib, "Winmm.lib")
@@ -74,12 +75,14 @@ std::map<HWND, COLORREF> hwndColors;
 static HINSTANCE globalHInst;
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
+    //AllocConsole();
+    //freopen("CONOUT$", "w", stdout);
+
     globalHInst = hInst;
 
     unsigned char* bitmapBytes[] = { __0_bmp, __1_bmp, __2_bmp, __3_bmp, __4_bmp, __5_bmp, __6_bmp, __7_bmp, __8_bmp, __9_bmp, __10_bmp };
     std::transform(bitmapBytes, bitmapBytes + kFrameCount, bitmaps, LoadBitmapFromBytes);
 
-    // Register the window class.
     WNDCLASS wc = {};
 
     wc.lpfnWndProc = WindowProc;
@@ -99,9 +102,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     long lastWindow = 0;
 
 	long time = GetTickCount();
-	while (GetTickCount() - time < (3.5 * kUnitTime)) {
+	while (GetTickCount() - time < (3.65 * kUnitTime)) {
 		Sleep(50);
 	}
+    printf("done sleeping at at %d\n", GetTickCount());
 
     int nextWindow = 0;
     while (true) {
@@ -190,6 +194,11 @@ BOOL PlayResource(HINSTANCE hInst, INT res) {
     lpRes = LockResource(hRes);
 
     if (lpRes != NULL) {
+        printf("warm sound at %d\n", GetTickCount());
+        bRtn = sndPlaySound((LPTSTR) lpRes, SND_MEMORY | SND_ASYNC | SND_NODEFAULT);
+        Sleep(50);
+        sndPlaySound(NULL, SND_SYNC);
+        printf("play sound at %d\n", GetTickCount());
         bRtn = sndPlaySound((LPTSTR) lpRes, SND_MEMORY | SND_ASYNC | SND_NODEFAULT);
     } else
         bRtn = 0;

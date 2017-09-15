@@ -16,7 +16,7 @@
 
 const wchar_t kClassName[] = L"Wednesday";
 
-const double kUnitTime = 60000 / 146.0;
+const double kUnitTime = 60000 / 152.0;
 
 const double kStep = 5.5 / 72.0;
 
@@ -98,42 +98,42 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     long lastWindow = 0;
 
-	long time = TimeMillis();
-	while (TimeMillis() - time < (3.25 * kUnitTime)) {
+	long time = GetTickCount();
+	while (GetTickCount() - time < (3.5 * kUnitTime)) {
 		Sleep(50);
 	}
 
-    int i = 0;
+    int nextWindow = 0;
     while (true) {
-        if (i == 0 || TimeMillis() - lastWindow >= timings[i - 1] * kUnitTime) {
-            if (i == totalWindows) {
+        if (nextWindow == 0 || GetTickCount() - lastWindow >= timings[nextWindow - 1] * kUnitTime) {
+            if (nextWindow >= totalWindows) {
                 break;
             }
 
-            int width = (int) (kSizeX[i] * kBaseSizeX);
-            int height = (int) (kSizeY[i] * kBaseSizeY);
+            int width = (int) (kSizeX[nextWindow] * kBaseSizeX);
+            int height = (int) (kSizeY[nextWindow] * kBaseSizeY);
 
             int x;
             int y;
-            if (kXOff[i] == -1) {
+            if (kXOff[nextWindow] == -1) {
                 x = resX / 2 - width / 2;
             } else {
-                x = (int) (kXOff[i] * resX);
+                x = (int) (kXOff[nextWindow] * resX);
             }
-            if (kYOff[i] == -1) {
+            if (kYOff[nextWindow] == -1) {
                 y = resY / 2 - height / 2;
             } else {
-                y = (int) (kYOff[i] * resY);
+                y = (int) (kYOff[nextWindow] * resY);
             }
-            windows[i] = MakeFrog(hInst, kClassName, x, y, width, height, colors[i], nShowCmd);
-            lastWindow = TimeMillis();
-            i++;
+            windows[nextWindow] = MakeFrog(hInst, kClassName, x, y, width, height, colors[nextWindow], nShowCmd);
+            lastWindow = GetTickCount();
+            nextWindow++;
         }
 
         for (int i = 0; i < totalWindows; i++) {
             HWND hwnd = windows[i];
             if (hwnd != NULL) {
-                if (lastFrameIndex[hwnd] < kFrameCount - 1 && TimeMillis() - lastSwitch[hwnd] >= kFrameInterval) {
+                if (lastFrameIndex[hwnd] < kFrameCount - 1 && GetTickCount() - lastSwitch[hwnd] >= kFrameInterval) {
                     AdvanceFrame(hwnd);
                 }
             }
@@ -141,12 +141,6 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     }
 
     return 0;
-}
-
-inline long TimeMillis() {
-    SYSTEMTIME time;
-    GetSystemTime(&time);
-    return (time.wSecond * 1000) + time.wMilliseconds;
 }
 
 HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, COLORREF color, int nCmdShow) {
@@ -169,7 +163,7 @@ HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, CO
 
 void AdvanceFrame(HWND hwnd) {
     lastFrameIndex[hwnd] = lastFrameIndex[hwnd] + 1;
-    lastSwitch[hwnd] = TimeMillis();
+    lastSwitch[hwnd] = GetTickCount();
     InvalidateRect(hwnd, NULL, true);
     UpdateWindow(hwnd);
 }
@@ -225,7 +219,7 @@ HBITMAP LoadBitmapFromBytes(unsigned char bytes[]) {
 }
 
 HBITMAP LoadBitmapFromResource(LPTSTR resource) {
-
+    return NULL;
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -233,7 +227,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
     case WM_CREATE:
     {
         lastFrameIndex[hwnd] = 0;
-        lastSwitch[hwnd] = TimeMillis();
+        lastSwitch[hwnd] = GetTickCount();
 
         break;
     }

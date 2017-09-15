@@ -194,6 +194,9 @@ BOOL PlayResource(HINSTANCE hInst, INT res) {
     lpRes = LockResource(hRes);
 
     if (lpRes != NULL) {
+        // so the idea here is that sometimes it takes a bit for the sound to actually start playing.
+        // by "warming" the sound prior to playing it all the way through, this delay can be effectively eliminated.
+        // the "warmed" sound is halted after 50 ms, before the user can notice it's playing.
         printf("warm sound at %d\n", GetTickCount());
         bRtn = sndPlaySound((LPTSTR) lpRes, SND_MEMORY | SND_ASYNC | SND_NODEFAULT);
         Sleep(50);

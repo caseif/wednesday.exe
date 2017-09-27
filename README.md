@@ -12,13 +12,13 @@ it is wednesday my dudes
 **q**: port to macOS/Linux pls  
 **a**: no
 
-**q:** why did you make this
+**q:** why did you make this  
 **a:** why didn't _you_ make this
 
 **q:** this is a great project you're really cool  
 **a:** don't touch me
 
-**q:** seriously why would you do this
+**q:** seriously why would you do this  
 **a:** shut up
 
 ### Media

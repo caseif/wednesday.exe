@@ -2,6 +2,8 @@
 
 it is wednesday my dudes
 
+[download here loser](https://github.com/caseif/wednesday.exe/releases)
+
 ### Requiremments
 - Windows (no idea what the min version is)
 - VC++ 2017 or newer

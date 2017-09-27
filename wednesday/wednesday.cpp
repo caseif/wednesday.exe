@@ -17,7 +17,7 @@
 
 const wchar_t kClassName[] = L"Wednesday";
 
-const double kUnitTime = 60000 / 152.0;
+const double kUnitTime = 60000 / 145.0;
 
 const double kStep = 5.5 / 72.0;
 
@@ -108,10 +108,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     printf("done sleeping at at %d\n", GetTickCount());
 
     int nextWindow = 0;
+    int nextWindowTime = GetTickCount() - 1;
     while (true) {
-        if (nextWindow == 0 || GetTickCount() - lastWindow >= timings[nextWindow - 1] * kUnitTime) {
+        if (nextWindow == 0 || GetTickCount() > nextWindowTime) {
             if (nextWindow >= totalWindows) {
                 break;
+            }
+
+            if (nextWindow <= totalWindows - 1) {
+                nextWindowTime += timings[nextWindow] * kUnitTime;
             }
 
             int width = (int) (kSizeX[nextWindow] * kBaseSizeX);

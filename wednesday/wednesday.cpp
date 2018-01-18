@@ -102,7 +102,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     long lastWindow = 0;
 
 	long time = GetTickCount();
-	while (GetTickCount() - time < (3.65 * kUnitTime)) {
+	while (GetTickCount() - time < (3.2 * kUnitTime)) {
 		Sleep(50);
 	}
     printf("done sleeping at at %d\n", GetTickCount());

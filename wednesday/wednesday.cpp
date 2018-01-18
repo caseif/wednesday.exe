@@ -14,6 +14,7 @@
 
 #include <time.h>
 #include <windows.h>
+#include <CommCtrl.h>
 
 const wchar_t kClassName[] = L"Wednesday";
 
@@ -120,7 +121,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
             }
 
             int width = (int) (kSizeX[nextWindow] * kBaseSizeX);
-            int height = (int) (kSizeY[nextWindow] * kBaseSizeY);
+            int height = (int) (kSizeY[nextWindow] * kBaseSizeY) + 40;
 
             int x;
             int y;
@@ -156,16 +157,33 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 }
 
 HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, COLORREF color, int nCmdShow) {
+    HMENU hMenubar = CreateMenu();
+    HMENU hFile = CreateMenu();
+    HMENU hEdit = CreateMenu();
+    HMENU hView = CreateMenu();
+    HMENU hHelp = CreateMenu();
+    AppendMenu(hMenubar, MF_POPUP, (UINT_PTR)hFile, L"File");
+    AppendMenu(hMenubar, MF_POPUP, (UINT_PTR)hEdit, L"Edit");
+    AppendMenu(hMenubar, MF_POPUP, (UINT_PTR)hEdit, L"View");
+    AppendMenu(hMenubar, MF_POPUP, (UINT_PTR)hHelp, L"Help");
+
     HWND hwnd = CreateWindowEx(NULL, kClassName, L"My Dudes", WS_OVERLAPPEDWINDOW,
         x, y, w, h,
-        NULL, NULL, hInst, NULL);
+        NULL, hMenubar, hInst, NULL);
 
     if (hwnd == NULL) {
         MessageBox(NULL, std::to_wstring(GetLastError()).c_str(), L"Failed to Launch", MB_ICONERROR);
         return NULL;
     }
-
-	hwndColors[hwnd] = color;
+    HWND hStatus = CreateWindowEx(0, STATUSCLASSNAME, NULL,
+        WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP, 0, 0, 0, 0,
+        hwnd, NULL, GetModuleHandle(NULL), NULL);
+    int statwidths[] = { 100, -1 };
+    
+    SendMessage(hStatus, SB_SETPARTS, sizeof(statwidths) / sizeof(int), (LPARAM)statwidths);
+    SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)L"It is wednesday");
+    
+    hwndColors[hwnd] = color;
 
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);

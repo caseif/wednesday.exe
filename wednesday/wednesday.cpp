@@ -5,7 +5,6 @@
 #pragma comment(lib, "Winmm.lib")
 
 #include "wednesday.h"
-#include "resources.h"
 #include "resource_snd.h"
 
 #include <algorithm>
@@ -81,8 +80,14 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     globalHInst = hInst;
 
-    unsigned char* bitmapBytes[] = { __0_bmp, __1_bmp, __2_bmp, __3_bmp, __4_bmp, __5_bmp, __6_bmp, __7_bmp, __8_bmp, __9_bmp, __10_bmp };
-    std::transform(bitmapBytes, bitmapBytes + kFrameCount, bitmaps, LoadBitmapFromBytes);
+    //unsigned char* bitmapBytes[] = { __0_bmp, __1_bmp, __2_bmp, __3_bmp, __4_bmp, __5_bmp, __6_bmp, __7_bmp, __8_bmp, __9_bmp, __10_bmp };
+    //std::transform(bitmapBytes, bitmapBytes + kFrameCount, bitmaps, LoadBitmapFromBytes);
+
+    int frameResources[] = {IDB_ANIM_00, IDB_ANIM_01, IDB_ANIM_02, IDB_ANIM_03, IDB_ANIM_04, IDB_ANIM_05, IDB_ANIM_06,
+        IDB_ANIM_07, IDB_ANIM_08, IDB_ANIM_09, IDB_ANIM_10};
+    for (int i = 0; i < kFrameCount; i++) {
+        bitmaps[i] = LoadBitmapFromResource(hInst, (LPTSTR) frameResources[i]);
+    }
 
     WNDCLASS wc = {};
 
@@ -259,8 +264,8 @@ HBITMAP LoadBitmapFromBytes(unsigned char bytes[]) {
     return hbmp;
 }
 
-HBITMAP LoadBitmapFromResource(LPTSTR resource) {
-    return NULL;
+HBITMAP LoadBitmapFromResource(HINSTANCE hInst, LPTSTR res) {
+    return LoadBitmap(hInst, MAKEINTRESOURCE(res));
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {

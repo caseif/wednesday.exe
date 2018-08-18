@@ -151,11 +151,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_snd.h" />
-    <ClInclude Include="resources.h" />
     <ClInclude Include="wednesday.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\anim\anim_00.bmp" />
+    <Image Include="res\anim\anim_01.bmp" />
+    <Image Include="res\anim\anim_02.bmp" />
+    <Image Include="res\anim\anim_03.bmp" />
+    <Image Include="res\anim\anim_04.bmp" />
+    <Image Include="res\anim\anim_05.bmp" />
+    <Image Include="res\anim\anim_06.bmp" />
+    <Image Include="res\anim\anim_07.bmp" />
+    <Image Include="res\anim\anim_08.bmp" />
+    <Image Include="res\anim\anim_09.bmp" />
+    <Image Include="res\anim\anim_10.bmp" />
+    <Image Include="res\icon.ico" />
+    <Image Include="res\wednesday.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\wednesday.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

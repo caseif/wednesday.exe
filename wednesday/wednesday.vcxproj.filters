@@ -23,9 +23,6 @@
     <ClInclude Include="wednesday.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resources.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource_snd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -34,5 +31,51 @@
     <ResourceCompile Include="resource.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\wednesday.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_00.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_01.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_02.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_03.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_04.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_05.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_06.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_07.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_08.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_09.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\anim\anim_10.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\wednesday.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

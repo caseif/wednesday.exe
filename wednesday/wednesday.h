@@ -14,4 +14,4 @@ BOOL PlayResource(HINSTANCE hInst, INT res);
 
 HBITMAP LoadBitmapFromBytes(unsigned char bytes[]);
 
-HBITMAP LoadBitmapFromResource(LPTSTR resource);
+HBITMAP LoadBitmapFromResource(HINSTANCE hInst, LPTSTR res);

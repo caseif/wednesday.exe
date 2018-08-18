@@ -150,7 +150,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource_snd.h" />
+    <ClInclude Include="resources.h" />
     <ClInclude Include="wednesday.h" />
   </ItemGroup>
   <ItemGroup>
@@ -169,10 +169,9 @@
     <Image Include="res\anim\anim_09.bmp" />
     <Image Include="res\anim\anim_10.bmp" />
     <Image Include="res\icon.ico" />
-    <Image Include="res\wednesday.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="res\wednesday.wav" />
+    <Media Include="res\music.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

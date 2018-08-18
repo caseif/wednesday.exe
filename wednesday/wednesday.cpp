@@ -5,7 +5,7 @@
 #pragma comment(lib, "Winmm.lib")
 
 #include "wednesday.h"
-#include "resource_snd.h"
+#include "resources.h"
 
 #include <algorithm>
 #include <map>

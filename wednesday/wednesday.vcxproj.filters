@@ -23,7 +23,7 @@
     <ClInclude Include="wednesday.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource_snd.h">
+    <ClInclude Include="resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -34,9 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\wednesday.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\anim\anim_00.bmp">
@@ -74,7 +71,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="res\wednesday.wav">
+    <Media Include="res\music.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

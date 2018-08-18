@@ -90,6 +90,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     wc.hInstance = hInst;
     wc.lpszClassName = kClassName;
 
+    wc.hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON));
+
     RegisterClass(&wc);
 
     PlayResource(hInst, MUSIC);
@@ -175,6 +177,7 @@ HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, CO
         MessageBox(NULL, std::to_wstring(GetLastError()).c_str(), L"Failed to Launch", MB_ICONERROR);
         return NULL;
     }
+
     HWND hStatus = CreateWindowEx(0, STATUSCLASSNAME, NULL,
         WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP, 0, 0, 0, 0,
         hwnd, NULL, GetModuleHandle(NULL), NULL);

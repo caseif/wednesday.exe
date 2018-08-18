@@ -157,6 +157,9 @@
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\wednesday.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

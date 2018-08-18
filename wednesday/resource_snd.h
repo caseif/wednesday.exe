@@ -1,8 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by resource_snd.rc
+// Used by resource.rc
 //
-#define MUSIC                       101
+#define MUSIC                           101
 
 // Next default values for new objects
 // 

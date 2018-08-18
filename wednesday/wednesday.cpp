@@ -109,7 +109,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     printf("done sleeping at at %d\n", GetTickCount());
 
     int nextWindow = 0;
-    int nextWindowTime = GetTickCount() - 1;
+    unsigned int nextWindowTime = GetTickCount() - 1;
     while (true) {
         if (nextWindow == 0 || GetTickCount() > nextWindowTime) {
             if (nextWindow >= totalWindows) {

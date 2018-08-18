@@ -155,7 +155,7 @@
     <ClInclude Include="wednesday.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="music.rc" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

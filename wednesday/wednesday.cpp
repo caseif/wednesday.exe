@@ -19,17 +19,17 @@ const wchar_t kClassName[] = L"Wednesday";
 
 const double kUnitTime = 60000 / 145.0;
 
-const double kStep = 5.5 / 72.0;
+const double kStep = 4.5 / 72.0;
 
 const COLORREF kRed = RGB(255, 0, 0);
 const COLORREF kBlue = RGB(0, 0, 255);
 
-const double kXOff[] = { 0, 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
-                         6 * kStep, 7 * kStep, 8 * kStep, 9 * kStep, 10 * kStep,
-                         10 * kStep, 9 * kStep, 8 * kStep, 7 * kStep, 6 * kStep,
-                         5 * kStep, 4 * kStep, 3 * kStep, 2 * kStep, 1 * kStep, 0,
-                         0, 0, 3 * kStep, 3 * kStep, 6 * kStep, 6 * kStep,
-                         8 * kStep, 8 * kStep, 10 * kStep,
+const double kXOff[] = { 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
+                         6 * kStep, 7 * kStep, 8 * kStep, 9 * kStep, 10 * kStep, 11 * kStep,
+						 11 * kStep, 10 * kStep, 9 * kStep, 8 * kStep, 7 * kStep, 6 * kStep,
+                         5 * kStep, 4 * kStep, 3 * kStep, 2 * kStep, 1 * kStep,
+						 1 * kStep, 1 * kStep, 3 * kStep, 3 * kStep, 6 * kStep, 6 * kStep,
+                         8 * kStep, 8 * kStep, 11 * kStep,
                          -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
 const double kYOff[] = { 0, 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
@@ -102,7 +102,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
     long lastWindow = 0;
 
 	long time = GetTickCount();
-	while (GetTickCount() - time < (3.65 * kUnitTime)) {
+	while (GetTickCount() - time < (3.2 * kUnitTime)) {
 		Sleep(50);
 	}
     printf("done sleeping at at %d\n", GetTickCount());

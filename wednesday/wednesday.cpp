@@ -19,25 +19,34 @@ const wchar_t kClassName[] = L"Wednesday";
 
 const double kUnitTime = 60000 / 145.0;
 
-const double kStep = 4.5 / 72.0;
-
 const COLORREF kRed = RGB(255, 0, 0);
 const COLORREF kBlue = RGB(0, 0, 255);
 
-const double kXOff[] = { 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
-                         6 * kStep, 7 * kStep, 8 * kStep, 9 * kStep, 10 * kStep, 11 * kStep,
-						 11 * kStep, 10 * kStep, 9 * kStep, 8 * kStep, 7 * kStep, 6 * kStep,
-                         5 * kStep, 4 * kStep, 3 * kStep, 2 * kStep, 1 * kStep,
-						 1 * kStep, 1 * kStep, 3 * kStep, 3 * kStep, 6 * kStep, 6 * kStep,
-                         8 * kStep, 8 * kStep, 11 * kStep,
+const int xRes = GetSystemMetrics(SM_CXMAXIMIZED);
+const int yRes = GetSystemMetrics(SM_CYMAXIMIZED);
+const double xSizePart = 0.28;
+const double ySizePart = 0.34;
+
+const double borderXSize = 0.1;
+const double borderYSize = 0.04;
+
+const double kXStep = (0.5 - borderXSize - xSizePart / 2) / 5;
+const double kYStep = (0.5 - borderYSize - ySizePart / 2) / 5;
+
+const double kXOff[] = { -5 * kXStep, -4 * kXStep, -3 * kXStep, -2 * kXStep, -1 * kXStep,
+                         0 * kXStep, 1 * kXStep, 2 * kXStep, 3 * kXStep, 4 * kXStep, 5 * kXStep,
+						 5 * kXStep, 4 * kXStep, 3 * kXStep, 2 * kXStep, 1 * kXStep, 0 * kXStep,
+                         -1 * kXStep, -2 * kXStep, -3 * kXStep, -4 * kXStep, -5 * kXStep,
+						 -6.8 * kXStep, -5.3 * kXStep, -4.2 * kXStep, -3.2 * kXStep, -1 * kXStep, 1.7 * kXStep,
+                         3 * kXStep, 6.3 * kXStep, 6.3 * kXStep,
                          -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
-const double kYOff[] = { 0, 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
-                         6 * kStep, 7 * kStep, 8 * kStep, 9 * kStep, 10 * kStep,
-                         0, 1 * kStep, 2 * kStep, 3 * kStep, 4 * kStep, 5 * kStep,
-                         6 * kStep, 7 * kStep, 8 * kStep, 9 * kStep, 10 * kStep,
-                         2 * kStep, 6 * kStep, 4 * kStep, 8 * kStep, 2 * kStep, 6 * kStep,
-                         4 * kStep, 8 * kStep, 5 * kStep,
+const double kYOff[] = { -5 * kYStep, -4 * kYStep, -3 * kYStep, -2 * kYStep, -1 * kYStep,
+                         0 * kYStep, 1 * kYStep, 2 * kYStep, 3 * kYStep, 4 * kYStep, 5 * kYStep,
+                         -5 * kYStep, -4 * kYStep, -3 * kYStep, -2 * kYStep, -1 * kYStep,
+                         0 * kYStep, 1 * kYStep, 2 * kYStep, 3 * kYStep, 4 * kYStep, 5 * kYStep,
+                         5 * kYStep, -5.1 * kYStep, 4 * kYStep, -3.8 * kYStep, 3 * kYStep, -1.3 * kYStep,
+                         3.8 * kYStep, -5.1 * kYStep, 5.1 * kYStep,
                          -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
 const double timings[] = { 2.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5,
@@ -48,20 +57,20 @@ const double timings[] = { 2.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.5
 const double kSizeX[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1,
-                          1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 3.9, 3.9 };
+                          1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 1. / xSizePart, 1. / xSizePart };
 
 const double kSizeY[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                           1, 1, 1, 1, 1, 1, 1, 1, 1,
-                          1, 1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 3.9 };
+                          1, 1, 1.4, 1.4, 2.0, 2.0, 2.8, 2.8, 1. / ySizePart };
 
 const COLORREF colors[] = { kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue,
 							kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed,
 							kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue,
 							kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed, kRed };
 
-const int kBaseSizeX = (int) (GetSystemMetrics(SM_CXSCREEN) / 6.0);
-const int kBaseSizeY = (int) (GetSystemMetrics(SM_CXSCREEN) / 8.0);
+const int kBaseSizeX = (int) (xRes * xSizePart);
+const int kBaseSizeY = (int) (yRes * ySizePart);
 
 const int kFrameCount = 11;
 const int kFrameInterval = 33;
@@ -101,9 +110,6 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     PlayResource(hInst, MUSIC);
 
-    int resX = GetSystemMetrics(SM_CXSCREEN);
-    int resY = GetSystemMetrics(SM_CYSCREEN);
-
     const int totalWindows = sizeof(timings) / sizeof(double);
     HWND windows[totalWindows] = {};
 
@@ -133,14 +139,20 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
             int x;
             int y;
             if (kXOff[nextWindow] == -1) {
-                x = resX / 2 - width / 2;
+                x = xRes / 2 - width / 2;
             } else {
-                x = (int) (kXOff[nextWindow] * resX);
+                x = (int) (xRes / 2 + kXOff[nextWindow] * xRes - width / 2);
             }
             if (kYOff[nextWindow] == -1) {
-                y = resY / 2 - height / 2;
+                y = yRes / 2 - height / 2;
             } else {
-                y = (int) (kYOff[nextWindow] * resY);
+                y = (int) (yRes / 2 + kYOff[nextWindow] * yRes - height / 2);
+            }
+            if (nextWindow == totalWindows - 1) { // for fixing error on borders in fullscreen
+                x = 0;
+                y = 0;
+                width = xRes;
+                height = yRes;
             }
             windows[nextWindow] = MakeFrog(hInst, kClassName, x, y, width, height, colors[nextWindow], nShowCmd);
             lastWindow = GetTickCount();

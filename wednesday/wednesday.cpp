@@ -16,6 +16,7 @@
 #include <CommCtrl.h>
 
 const wchar_t kClassName[] = L"Wednesday";
+const wchar_t kClassNameEnd[] = L"WSoD\0";
 
 const double kUnitTime = 60000 / 145.0;
 
@@ -72,10 +73,13 @@ const COLORREF colors[] = { kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBlue, kBl
 const int kBaseSizeX = (int) (xRes * xSizePart);
 const int kBaseSizeY = (int) (yRes * ySizePart);
 
+
+
 const int kFrameCount = 11;
 const int kFrameInterval = 33;
 
 static HBITMAP bitmaps[kFrameCount];
+static HBITMAP hbmpWSoD;
 
 std::map<HWND, int> lastFrameIndex;
 std::map<HWND, long> lastSwitch;
@@ -91,6 +95,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
 
     //unsigned char* bitmapBytes[] = { __0_bmp, __1_bmp, __2_bmp, __3_bmp, __4_bmp, __5_bmp, __6_bmp, __7_bmp, __8_bmp, __9_bmp, __10_bmp };
     //std::transform(bitmapBytes, bitmapBytes + kFrameCount, bitmaps, LoadBitmapFromBytes);
+
+    hbmpWSoD = (HBITMAP)LoadBitmapFromResource(hInst, (LPTSTR)IDB_LAST_SCREEN);
 
     int frameResources[] = {IDB_ANIM_00, IDB_ANIM_01, IDB_ANIM_02, IDB_ANIM_03, IDB_ANIM_04, IDB_ANIM_05, IDB_ANIM_06,
         IDB_ANIM_07, IDB_ANIM_08, IDB_ANIM_09, IDB_ANIM_10};
@@ -172,7 +178,39 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmdLine, int nShowCmd) {
         }
     }
 
+    for (int i = 0; i < totalWindows; i++)
+        DestroyWindow(windows[i]);
+
+    WNDCLASS wc_end = {};
+    wc_end.lpfnWndProc = WSoDProc;
+    wc_end.hInstance = hInst;
+    wc_end.lpszClassName = kClassNameEnd;
+    RegisterClass(&wc_end);
+
+    HWND hwnd = CreateWindowEx(NULL, kClassNameEnd, L"My Dudes", WS_OVERLAPPEDWINDOW,
+        0, 0, 0, 0,
+        NULL, NULL, hInst, NULL);
+    HWND hwnd_full = CreateFullscreenWindow(hwnd, hInst);
+    ShowWindow(hwnd_full, nShowCmd);
+    UpdateWindow(hwnd_full);
+    Sleep(5000);
+
     return 0;
+}
+
+HWND CreateFullscreenWindow(HWND hwnd, HINSTANCE g_hinst) {
+    HMONITOR hmon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+    MONITORINFO mi = { sizeof(mi) };
+    if (!GetMonitorInfo(hmon, &mi)) return NULL;
+    return CreateWindow(
+        kClassNameEnd,
+        NULL,
+        WS_POPUP | WS_VISIBLE,
+        mi.rcMonitor.left,
+        mi.rcMonitor.top,
+        mi.rcMonitor.right - mi.rcMonitor.left,
+        mi.rcMonitor.bottom - mi.rcMonitor.top,
+        hwnd, NULL, g_hinst, 0);
 }
 
 HWND MakeFrog(HINSTANCE hInst, LPCTSTR className, int x, int y, int w, int h, COLORREF color, int nCmdShow) {
@@ -280,6 +318,57 @@ HBITMAP LoadBitmapFromResource(HINSTANCE hInst, LPTSTR res) {
     return LoadBitmap(hInst, MAKEINTRESOURCE(res));
 }
 
+LRESULT CALLBACK WSoDProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_CREATE: {
+            lastFrameIndex[hwnd] = 0;
+            lastSwitch[hwnd] = GetTickCount();
+            break;
+        }
+        case WM_DESTROY: {
+            PostQuitMessage(0);
+            break;
+        }
+        case WM_PAINT: {
+            PAINTSTRUCT     ps;
+            HDC             hdc;
+            BITMAP          bitmap;
+            HDC             hdcMem;
+            HGDIOBJ         oldBitmap;
+
+            HBRUSH brush = CreateSolidBrush(hwndColors[hwnd]);
+            SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG)brush);
+
+            hdc = BeginPaint(hwnd, &ps);
+
+            HBITMAP hbmp = hbmpWSoD;
+
+            hdcMem = CreateCompatibleDC(hdc);
+            oldBitmap = SelectObject(hdcMem, hbmp);
+
+            GetObject(hbmp, sizeof(bitmap), &bitmap);
+            RECT rect;
+            GetWindowRect(hwnd, &rect);
+            AlphaBlend(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top, hdcMem, 0, 0,
+                bitmap.bmWidth, bitmap.bmHeight, { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA });
+            SelectObject(hdcMem, oldBitmap);
+            DeleteDC(hdcMem);
+
+            EndPaint(hwnd, &ps);
+
+            break;
+        }
+        case WM_ERASEBKGND: {
+        }
+        default: {
+            return DefWindowProc(hwnd, uMsg, wParam, lParam);
+        }
+    }
+
+    return 0;
+}
+
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
     case WM_CREATE:
@@ -337,4 +426,3 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
     return 0;
 }
-
